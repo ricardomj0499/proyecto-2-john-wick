@@ -152,7 +152,19 @@ class DominioTSP(Dominio):
             i+=1
             j+=1
         return resp
-        
+
+
+    def swap(self,lista,p1,p2):
+        temp=lista[p1]
+        lista[p1]=lista[p2]
+        lista[p2]=temp
+        return lista
+	
+    def swap_random(self,lista):
+        a=random.randint(0,len(lista)-1)
+        b=random.randint(0,len(lista)-1)
+        self.swap(lista,a,b)
+        return lista
 
     def vecino(self, sol):
         """Calcula una solución vecina a partir de una solución dada.
@@ -169,6 +181,8 @@ class DominioTSP(Dominio):
         Salidas:
         (list) Solución vecina
         """
-
-        # Pendiente: implementar este método
-        pass
+        a=sol[0]
+        l=len(sol)-1
+        c=sol[1:l]
+        v=self.swap_random(c)
+        return [a]+v+[a]
