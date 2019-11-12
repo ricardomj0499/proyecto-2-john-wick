@@ -69,8 +69,16 @@ class DominioTSP(Dominio):
         (bool) True si la solución es válida, False en cualquier otro caso
         """
 
-        # Pendiente: implementar este método
-        pass
+        cp=self.ciudad_inicio
+        matriz=self.matriz
+        ciudades=matriz[0]
+        if(self.existen_repetidos(solucion)==True):
+            return False
+        for i in sol:
+            if(i==cp or self.existe_ciudad(i,ciudades)==False):
+                return False
+        return True
+        
 
     def texto(self, sol):
         """Construye una representación en hilera legible por humanos de la solución
