@@ -29,7 +29,7 @@ class DominioTSP(Dominio):
         Construye una representación en hilera legible por humanos de la solución
         con el fin de reportar resultados al usuario final.
     """
-    def cargar_csv(ubicacion):
+    def cargar_csv(self,ubicacion):
 		with open(ubicacion,newline='') as csvfile:
 			data=list(csv.reader(csvfile))
 		return data
@@ -50,7 +50,7 @@ class DominioTSP(Dominio):
             Una instancia de DominioTSP correctamente inicializada.
         """
         self.ciudad_inicio=ciudad_inicio
-        dominio=cargar_csv(ciudades_rutacsv)
+        self.matriz=self.cargar_csv(ciudades_rutacsv)
 
     def validar(self, sol):
         """Valida que la solución dada cumple con los requisitos del problema.
