@@ -99,9 +99,30 @@ class DominioTSP(Dominio):
         Salidas:
         (list) Una lista que representa una solución válida para esta instancia del vendedor viajero
         """
+	ciudades=self.matriz[0]
+        cd=self.ciudad_inicio
+        solucion=[]
+        for i in ciudades:
+            if(i!=cd):
+                solucion+=[i]
+        solucion=solucion[1:]
+        print(solucion)
+        return [cd]+solucion+[cd]
 
-        # Pendiente: implementar este método
-        pass
+    def distancia_entre_2_ciudades(self,matriz,c1,c2):
+        """Funcion agregada .........calcula la distancia entre dos casas"""
+        ciudades=self.matriz[0]
+        p1=0
+        p2=0
+        for i in ciudades:
+            if(i==c1):
+                break
+            p1+=1
+        for j in ciudades:
+            if(j==c2):
+                break	
+            p2+=1
+        return float(matriz[p1][p2])
 
     def fcosto(self, sol):
         """Calcula el costo asociado con una solución dada.
@@ -113,9 +134,17 @@ class DominioTSP(Dominio):
         Salidas:
         (float) valor del costo asociado con la solución
         """
-
-        # Pendiente: implementar este método
-        pass
+	matriz=self.matriz
+        i=0
+        j=1
+        resp=0
+        l=len(sol)-1
+        while(j<l):
+            resp+= self.distancia_entre_2_ciudades(matriz,sol[i],sol[j])
+            i+=1
+            j+=1
+        return resp
+        
 
     def vecino(self, sol):
         """Calcula una solución vecina a partir de una solución dada.
