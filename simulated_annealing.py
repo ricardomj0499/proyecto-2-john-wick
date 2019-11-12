@@ -16,6 +16,10 @@
         (estructura de datos) Estructura de datos según el dominio, que representa una
         aproximación a la mejor solución al problema.
     """
+import math  
+import random
+import time
+
     def optimizar(dominio, temperatura=10e26,tasa_enfriamiento=0.999999):
         sol=dominio.generar()
 	    costo=dominio.fcosto(sol)
