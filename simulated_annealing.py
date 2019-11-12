@@ -20,10 +20,10 @@ import math
 import random
 import time
 
-    def optimizar(dominio, temperatura=10e26,tasa_enfriamiento=0.999999):
+    def optimizar(dominio, temperatura=10e28,tasa_enfriamiento=0.999999):
         sol=dominio.generar()
 	    costo=dominio.fcosto(sol)
-        while(temperatura>=0.001):
+        while(temperatura>=0.01):
             sol_prima=dominio.vecino(sol)
             costo_prima=dominio.fcosto(sol_prima)
             p=math.exp(-abs(costo_prima-costo)/temperatura)
