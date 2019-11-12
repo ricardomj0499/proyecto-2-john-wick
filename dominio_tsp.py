@@ -1,5 +1,6 @@
 from dominio import Dominio
-
+import csv   #agregada por desarrollador
+import random#agregada por desarrollador
 
 class DominioTSP(Dominio):
     """
