@@ -34,6 +34,7 @@ import time
                 costo=costo_prima	
             temperatura=temperatura*tasa_enfriamiento
             #print(temperatura)
-        return "Solucion: "+str(sol)+"\nCosto: "+str(costo)
+        #return "Solucion: "+str(sol)+"\nCosto: "+str(costo)
+	return sol
     
     
