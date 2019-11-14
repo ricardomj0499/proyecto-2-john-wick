@@ -75,7 +75,7 @@ class DominioTSP(Dominio):
         if(self.existen_repetidos(solucion)==True):
             return False
         for i in sol:
-            if(i==cp or self.existe_ciudad(i,ciudades)==False):
+            if(i==cp or not self.existe_ciudad(i,ciudades)):
                 return False
         return True
         
@@ -118,7 +118,7 @@ class DominioTSP(Dominio):
         return [cd]+solucion+[cd]
 
     def distancia_entre_2_ciudades(self,matriz,c1,c2):
-        """Funcion agregada .........calcula la distancia entre dos casas"""
+        """Este metodo calcula la distancia entre dos ciudades"""
         ciudades=self.matriz[0]
         p1=0
         p2=0
