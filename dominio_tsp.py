@@ -30,9 +30,17 @@ class DominioTSP(Dominio):
         con el fin de reportar resultados al usuario final.
     """
     def cargar_csv(self,ubicacion):
-		with open(ubicacion,newline='') as csvfile:
-			data=list(csv.reader(csvfile))
-		return data
+        with open(ubicacion,newline='') as csvfile:
+            data=list(csv.reader(csvfile))
+        return data
+	
+    def crear_diccionario(self,matriz):
+        lista=matriz[0][1:]
+        dic={}
+        for x in range(len(lista)):
+            dic1={lista[x]:x}
+            dic.update(dic1)
+        return dic
 
     def __init__(self, ciudades_rutacsv, ciudad_inicio):
         """Construye un objeto de modelo de dominio para una instancia
@@ -51,7 +59,26 @@ class DominioTSP(Dominio):
         """
         self.ciudad_inicio=ciudad_inicio
         self.matriz=self.cargar_csv(ciudades_rutacsv)
+        self.diccionario=self.crear_diccionario(self.cargar_csv(ciudades_rutacsv))
+        
 
+	
+	
+    def existe_ciudad(self,ciudad,lista):
+        l=len(lista)
+        for i in range(1,l):
+            if(ciudad==lista[i]):
+                return True
+        return False
+        
+    def existen_repetidos(self,lista):
+	#True si hay repetidos, false si no lo hay
+        a=set(lista)
+        if(list(a)!=lista):
+            return True
+        else:
+        	return False
+	
     def validar(self, sol):
         """Valida que la solución dada cumple con los requisitos del problema.
 
@@ -68,17 +95,33 @@ class DominioTSP(Dominio):
         Salidas:
         (bool) True si la solución es válida, False en cualquier otro caso
         """
-
-        cp=self.ciudad_inicio
+	cp=self.ciudad_inicio
         matriz=self.matriz
-        ciudades=matriz[0]
-        if(self.existen_repetidos(solucion)==True):
+        ciudades=matriz[1:]
+        if(len(sol)>=len(ciudades)):
             return False
-        for i in sol:
-            if(i==cp or not self.existe_ciudad(i,ciudades)):
+        for i in(sol):
+            if(type(int(i))!=int):
+                return False
+        if(self.existen_repetidos(sol)==True):
+            return False
+        numero_ci=self.diccionario.get(self.ciudad_inicio)
+        print(numero_ci)
+        for i in(sol):
+            if(i==numero_ci):
                 return False
         return True
-        
+
+       
+    def pasar_texto_numero(self,lista):
+        dic=self.diccionario
+        lista2=[]
+        for x in lista:
+            for key in dic:
+                if(key==x):
+                    lista2.append(dic[key])
+        #print(dic)
+        return lista2    
 
     def texto(self, sol):
         """Construye una representación en hilera legible por humanos de la solución
@@ -95,8 +138,9 @@ class DominioTSP(Dominio):
         (str) Hilera en el formato mencionado anteriormente.
         """
 
-        # Pendiente: implementar este método
-        pass
+        texto=self.pasar_de_numero_texto(sol)
+        cd=self.ciudad_inicio
+        return cd+texto+cd
 
     def generar(self):
         """Construye aleatoriamente una lista que representa una posible solución al problema.
@@ -114,8 +158,9 @@ class DominioTSP(Dominio):
             if(i!=cd):
                 solucion+=[i]
         solucion=solucion[1:]
-        print(solucion)
-        return [cd]+solucion+[cd]
+        solucion=self.pasar_texto_numero(solucion)
+        random.shuffle(solucion)
+        return solucion
 
     def distancia_entre_2_ciudades(self,matriz,c1,c2):
         """Este metodo calcula la distancia entre dos ciudades"""
@@ -142,13 +187,16 @@ class DominioTSP(Dominio):
         Salidas:
         (float) valor del costo asociado con la solución
         """
-	matriz=self.matriz
+	ci=self.ciudad_inicio
+        numero_ci=self.diccionario.get(ci)
+        sol=[numero_ci]+sol+[numero_ci]
+        matriz=self.matriz
+        resp=0
+        l=len(sol)
         i=0
         j=1
-        resp=0
-        l=len(sol)-1
         while(j<l):
-            resp+= self.distancia_entre_2_ciudades(matriz,sol[i],sol[j])
+            resp+=float(matriz[int(sol[i])+1][int(sol[j])+1])
             i+=1
             j+=1
         return resp
@@ -181,7 +229,7 @@ class DominioTSP(Dominio):
         Salidas:
         (list) Solución vecina
         """
-        a=sol[0]
+        a=self.diccionario.get(self.ciudad_inicio)
         l=len(sol)-1
         c=sol[1:l]
         v=self.swap_random(c)
