@@ -106,7 +106,7 @@ class DominioTSP(Dominio):
         if(self.existen_repetidos(sol)==True):
             return False
         numero_ci=self.diccionario.get(self.ciudad_inicio)
-        print(numero_ci)
+        #print(numero_ci)
         for i in(sol):
             if(i==numero_ci):
                 return False
