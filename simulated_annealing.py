@@ -20,21 +20,19 @@ import math
 import random
 import time
 
-    def optimizar(dominio, temperatura=10e28,tasa_enfriamiento=0.999999):
-        sol=dominio.generar()
-	    costo=dominio.fcosto(sol)
-        while(temperatura>=0.01):
-            sol_prima=dominio.vecino(sol)
-            costo_prima=dominio.fcosto(sol_prima)
-            p=math.exp(-abs(costo_prima-costo)/temperatura)
-            p_azar= random.randint(0,1)
-            #print("uno: "+str(costo)+".....dos: "+str(costo_prima))
-            if(costo_prima<=costo or p_azar<p):
-                sol=sol_prima
-                costo=costo_prima	
-            temperatura=temperatura*tasa_enfriamiento
-            #print(temperatura)
-        #return "Solucion: "+str(sol)+"\nCosto: "+str(costo)
+def optimizar(dominio, temperatura=10e32,tasa_enfriamiento=0.95):
+	sol=dominio.generar()
+	costo=dominio.fcosto(sol)
+	while(temperatura>0.01):
+		sol_prima=dominio.vecino(sol)
+		costo_prima=dominio.fcosto(sol_prima)
+		p=math.exp(-abs(costo_prima-costo)/temperatura)
+		p_azar= random.uniform(0,1)
+		#print("uno: "+str(costo)+".....dos: "+str(costo_prima))
+		if(costo_prima<=costo or p_azar<p):
+			sol=sol_prima
+		    	costo=costo_prima
+		temperatura=temperatura*tasa_enfriamiento
 	return sol
     
     
