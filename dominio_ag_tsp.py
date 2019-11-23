@@ -23,7 +23,11 @@ class DominioAGTSP(DominioAG, DominioTSP):
         Produce una nueva solución aplicando un ligero cambio a la solución dada por
         parámetro.
     """
-
+    def cargar_csv(self,ubicacion):
+        with open(ubicacion,newline='') as csvfile:
+            data=list(csv.reader(csvfile))
+        return data
+    
     def __init__(self, ciudades_rutacsv, ciudad_inicio):
         """Construye un objeto de modelo de dominio para una instancia
         específica del problema del vendedor viajero para ser resuelto
@@ -40,9 +44,10 @@ class DominioAGTSP(DominioAG, DominioTSP):
         Salidas:
             Una instancia de DominioAGTSP correctamente inicializada.
         """
-        
-        # Pendiente: implementar este constructor
-        pass
+        self.ciudad_inicio=ciudad_inicio
+        self.matriz=self.cargar_csv(ciudades_rutacsv)
+        self.diccionario=self.crear_diccionario(self.cargar_csv(ciudades_rutacsv))
+	
 
     def generar_n(self, n):
         """Construye aleatoriamente una lista de listas que representa n 
@@ -56,9 +61,11 @@ class DominioAGTSP(DominioAG, DominioTSP):
         (list) Lista que contiene n listas, cada una representando
         una posible solución al problema modelado por el objeto de dominio.
         """
-        
-        # Pendiente: implementar este método
-        pass
+        resp=[]
+        for i in range(n):
+            resp+=[DominioTSP.generar(self)]
+        return resp
+    
 
     def cruzar(self, sol_a, sol_b):
         """Produce una nueva posible solución cruzando las dos soluciones dadas por parámetro.
@@ -73,9 +80,11 @@ class DominioAGTSP(DominioAG, DominioTSP):
         Salidas:
         (estructura de datos) Una nueva solución producto del cruzamiento entre las soluciones A y B
         """
-
-        # Pendiente: implementar este método
-        pass
+        #print(sol_a)
+        resp=[]
+        aleatorio=random.randint(0,len(sol_a))
+        resp+=sol_a[:aleatorio]+sol_b[aleatorio:]
+        return resp
 
     def mutar(self, sol):
         """Produce una nueva solución aplicando un ligero cambio a la solución dada por
@@ -89,6 +98,48 @@ class DominioAGTSP(DominioAG, DominioTSP):
         (estructura de datos) Una nueva solución que refleja un ligero cambio con respecto 
         a la solución dada por parámetro
         """
-
-        # Pendiente: implementar este método
-        pass
+        mutacion=DominioTSP.swap_random(self,sol)
+        return mutacion
+        
+        
+    def mergeSort_doble(self,lista,lista2):
+        if(len(lista)!=len(lista2)):
+            return "error malos tamanos"
+        if(len(lista)>1):
+            mitad=(len(lista))//2
+            
+            ListaSubA=lista[:mitad]
+            ListaSubB=lista[mitad:]
+            
+            ListaSubA2=lista2[:mitad]
+            ListaSubB2=lista2[mitad:]
+            
+            self.mergeSort_doble(ListaSubA,ListaSubA2)
+            self.mergeSort_doble(ListaSubB,ListaSubB2)
+            
+            i=0
+            j=0
+            p=0
+            
+            while((i<len(ListaSubA)) and (j<len(ListaSubB))):
+                if(ListaSubA[i]<ListaSubB[j]):
+                    lista[p]=ListaSubA[i]
+                    lista2[p]=ListaSubA2[i]
+                    i+=1
+                else:
+                    lista[p]=ListaSubB[j]
+                    lista2[p]=ListaSubB2[j]
+                    j+=1
+                p+=1
+                #print(lista)
+            while(i<len(ListaSubA)):
+                lista[p]=ListaSubA[i]
+                lista2[p]=ListaSubA2[i]
+                i+=1
+                p+=1
+            while(j<len(ListaSubB)):
+                lista[p]=ListaSubB[j]
+                lista2[p]=ListaSubB2[j]
+                j+=1
+                p+=1
+            return []+[lista2]+[lista]
