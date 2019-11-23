@@ -138,9 +138,11 @@ class DominioTSP(Dominio):
         (str) Hilera en el formato mencionado anteriormente.
         """
 
+        ci=self.diccionario.get(self.ciudad_inicio)
+        sol=[ci]+sol+[ci]
         texto=self.pasar_de_numero_texto(sol)
-        cd=self.ciudad_inicio
-        return cd+texto+cd
+        #cd=self.ciudad_inicio
+        return texto
 
     def generar(self):
         """Construye aleatoriamente una lista que representa una posible solución al problema.
