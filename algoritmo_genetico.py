@@ -54,7 +54,7 @@ def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps):
             num_hijos-=1
         pobl=sig_gen+decendencia
         aptitud_de_poblacion=[]
-        print(reps)
+        #print(reps)
         reps-=1
 		
 	
